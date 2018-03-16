@@ -1,18 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+    android:fillViewport="true"
+    
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg"
-    tools:context="com.hoangtrongminhduc.html5.dev.myapplication.MainActivity">
 
+    tools:context="com.hoangtrongminhduc.html5.dev.myapplication.MainActivity">
+    <LinearLayout
+        android:orientation="vertical"
+        android:background="#f2faf5"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <RelativeLayout
-        android:background="#bcd0f7"
+        android:background="@drawable/title"
         android:padding="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="70dp">
+        <TextView
+            android:id="@+id/tvProfile"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:text="Cá nhân"
+            android:textColor="#f6fcfd"
+            android:background="@drawable/roundborder2"
+            android:gravity="center"
+            android:layout_width="80dp"
+            android:layout_height="30dp" />
         <LinearLayout
             android:layout_centerHorizontal="true"
             android:id="@+id/lnAcc"
@@ -38,13 +53,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
+
         <TextView
             android:id="@+id/tvUpdate"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:text="Cập nhật"
-            android:textColor="#426673"
-            android:background="#00b6ff"
+            android:textColor="#f6fcfd"
+            android:background="@drawable/roundborder"
             android:gravity="center"
             android:layout_width="80dp"
             android:layout_height="30dp" />
@@ -55,13 +71,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
-            android:text="Trạng thái"
+            android:text="TRẠNG THÁI"
             android:gravity="center"
-            android:textSize="20sp"
-            android:textColor="#990047"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="#535353"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <GridLayout
+            android:layout_gravity="center"
             android:columnCount="2"
             android:rowCount="6"
             android:layout_width="wrap_content"
@@ -69,222 +87,304 @@
             <TextView
                 android:text="Mực nước: "
                 android:layout_gravity="right"
-                android:textColor="#990047"
+                android:textColor="#5c5c5c"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/tvWater"
                 android:layout_gravity="left"
-                android:textColor="#990047"
+                android:textColor="#2e2e2e"
                 android:text="11mm"
+                android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 />
             <TextView
                 android:text="Thời gian bật đèn: "
-                android:textColor="#990047"
+                android:textColor="#5c5c5c"
                 android:layout_gravity="right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/tvLightTime"
-                android:textColor="#990047"
+                android:textColor="#2e2e2e"
                 android:text="10h20p"
+                android:textStyle="bold"
                 android:layout_gravity="left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
                 android:text="Ngày giờ khởi động: "
-                android:textColor="#990047"
+                android:textColor="#5c5c5c"
                 android:layout_gravity="right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/tvTimeUp"
-                android:textColor="#990047"
+                android:textColor="#2e2e2e"
                 android:text="23/02/2018"
+                android:textStyle="bold"
                 android:layout_gravity="left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
                 android:text="Cập nhật cuối: "
-                android:textColor="#990047"
+                android:textColor="#5c5c5c"
                 android:layout_gravity="right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/tvTimeUpdate"
-                android:textColor="#990047"
+                android:textColor="#2e2e2e"
+                android:textStyle="bold"
                 android:text="14h23 \n03/03/2018 \n(12 phút trước)"
                 android:layout_gravity="left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </GridLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:background="@drawable/border2"
+        android:orientation="horizontal"
+
+        android:weightSum="9"
+
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
         <LinearLayout
-            android:background="#e5bfff82"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:paddingLeft="5dp"
             android:orientation="horizontal"
-            android:layout_marginTop="10dp"
-            android:weightSum="9"
-            android:padding="5dp"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content">
+            <ImageView
+
+                android:src="@drawable/temicon"
+                android:layout_width="30dp"
+                android:layout_height="50dp" />
             <LinearLayout
-                android:layout_weight="3"
-                android:gravity="center"
                 android:orientation="vertical"
+                android:layout_marginLeft="5dp"
+                android:gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <TextView
                     android:text="Nhiệt độ"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <TextView
                     android:id="@+id/tvTem"
                     android:text="34"
                     android:textSize="30dp"
+                    android:textColor="#000000"
+                    android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_weight="3"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+
+                android:src="@drawable/humicon"
+                android:layout_width="30dp"
+                android:layout_height="60dp" />
             <LinearLayout
-                android:layout_weight="3"
                 android:gravity="center"
+                android:layout_marginLeft="5dp"
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <TextView
                     android:text="Độ ẩm"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <TextView
                     android:id="@+id/tvHumi"
-                    android:text="87%"
+                    android:text="87"
                     android:textSize="30dp"
+                    android:textStyle="bold"
+                    android:textColor="#000000"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_weight="3"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="5dp"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+
+                android:src="@drawable/iconcalenda"
+                android:layout_width="30dp"
+                android:layout_height="60dp" />
+
             <LinearLayout
-                android:layout_weight="3"
+                android:layout_marginLeft="5dp"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <TextView
                     android:text="Ngày trồng"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <TextView
                     android:id="@+id/tvDayUp"
                     android:text="20"
                     android:textSize="30dp"
+                    android:textStyle="bold"
+                    android:textColor="#000000"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
-        android:orientation="horizontal"
-        android:background="#f1f1f1"
-        android:weightSum="100"
-        android:padding="10dp"
+        android:background="@drawable/border3"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="65dp">
+        android:layout_height="wrap_content">
         <LinearLayout
-            android:layout_weight="90"
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
-            <TextView
-                android:text="Ánh sáng"
-                android:textSize="20sp"
-                android:textColor="#3b3b3b"
+            android:orientation="horizontal"
+            android:background="#f1f1f1"
+            android:weightSum="100"
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="65dp">
+            <LinearLayout
+                android:layout_weight="90"
+                android:orientation="vertical"
+                android:gravity="center_vertical"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:id="@+id/tvSttLight"
-                android:text="Đang tắt"
-                android:textColor="#ff537e"
+                android:layout_height="match_parent">
+                <TextView
+                    android:text="Ánh sáng"
+                    android:textSize="20sp"
+                    android:textColor="#3b3b3b"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/tvSttLight"
+                    android:text="Đang tắt"
+                    android:textColor="#ff537e"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <Switch
+                android:id="@+id/swLight"
+                android:layout_weight="10"
+                android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
-        <Switch
-            android:id="@+id/swLight"
-            android:layout_weight="10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:background="#f1f1f1"
-        android:weightSum="100"
-        android:padding="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="65dp">
+        <TextView
+            android:background="#582e2e2e"
+            android:layout_width="match_parent"
+            android:layout_height="1dp" />
         <LinearLayout
-            android:layout_weight="90"
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
-            <TextView
-                android:text="Bơm"
-                android:textSize="20sp"
-                android:textColor="#3b3b3b"
+            android:orientation="horizontal"
+            android:background="#f1f1f1"
+            android:weightSum="100"
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="65dp">
+            <LinearLayout
+                android:layout_weight="90"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:id="@+id/tvSttEng"
-                android:text="Đang tắt"
-                android:textColor="#ff537e"
+                android:layout_height="match_parent">
+                <TextView
+                    android:text="Bơm"
+                    android:textSize="20sp"
+                    android:textColor="#3b3b3b"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/tvSttEng"
+                    android:text="Đang tắt"
+                    android:textColor="#ff537e"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <Switch
+                android:id="@+id/swEngine"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
-        <Switch
-            android:id="@+id/swEngine"
-            android:layout_weight="10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:background="#f1f1f1"
-        android:weightSum="100"
-        android:padding="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="65dp">
+        <TextView
+            android:background="#582e2e2e"
+            android:layout_width="match_parent"
+            android:layout_height="1dp" />
         <LinearLayout
-            android:layout_weight="90"
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
-            <TextView
-                android:text="Quạt gió"
-                android:textSize="20sp"
-                android:textColor="#3b3b3b"
+            android:orientation="horizontal"
+            android:background="#f1f1f1"
+            android:weightSum="100"
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="65dp">
+            <LinearLayout
+                android:layout_weight="90"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:id="@+id/tvSttFan"
-                android:text="Đang tắt"
-                android:textColor="#ff537e"
+                android:layout_height="match_parent">
+                <TextView
+                    android:text="Quạt gió"
+                    android:textSize="20sp"
+                    android:textColor="#3b3b3b"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/tvSttFan"
+                    android:text="Đang tắt"
+                    android:textColor="#ff537e"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <Switch
+                android:id="@+id/swFan"
+                android:layout_weight="10"
+                android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
-        <Switch
-            android:id="@+id/swFan"
-            android:layout_weight="10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
     </LinearLayout>
+
+
     <TextView
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:id="@+id/tvDetail"
         android:text="XEM ĐÁNH GIÁ CHI TIẾT"
-        android:textColor="#3880cc"
-        android:background="#e2e2e2"
-        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#f6fcfd"
+        android:background="@drawable/roundborder"
+        android:textSize="15sp"
         android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="50dp" />
-
-</LinearLayout>
+        android:layout_height="35dp" />
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="25dp" />
+    </LinearLayout>
+</ScrollView>

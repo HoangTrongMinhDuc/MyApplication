@@ -7,40 +7,36 @@
     android:layout_height="match_parent"
     tools:context="com.hoangtrongminhduc.html5.dev.myapplication.Main2Activity">
     <LinearLayout
-        android:orientation="vertical"
-        android:padding="10dp"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <TextView
-            android:text="Nhiệt độ"
-            android:textSize="20sp"
+        <LinearLayout
+            android:orientation="horizontal"
             android:gravity="center"
-            android:textColor="#216800"
+            android:background="#32cc89"
+            android:layout_width="50dp"
+            android:layout_height="48dp">
+            <ImageView
+                android:id="@+id/imgBack"
+                android:padding="5dp"
+                android:src="@drawable/back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <android.support.design.widget.TabLayout
+            android:background="@drawable/title"
+            android:layout_alignParentTop="true"
+            android:id="@+id/tab_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/chart1"
-            android:layout_width="match_parent"
-            android:layout_height="200dp">
-        </com.github.mikephil.charting.charts.LineChart>
+            android:layout_height="48dp"
+            app:tabSelectedTextColor="#124">
+        </android.support.design.widget.TabLayout>
     </LinearLayout>
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_marginTop="15dp"
-        android:padding="10dp"
+
+    <android.support.v4.view.ViewPager
+        android:layout_below="@id/tab_layout"
+        android:id="@+id/view_pager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:text="Độ ẩm"
-            android:textSize="20sp"
-            android:gravity="center"
-            android:textColor="#216800"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/chart2"
-            android:layout_width="match_parent"
-            android:layout_height="200dp">
-        </com.github.mikephil.charting.charts.LineChart>
-    </LinearLayout>
+        android:layout_height="match_parent" />
 </LinearLayout>
