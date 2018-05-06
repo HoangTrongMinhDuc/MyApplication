@@ -5,7 +5,10 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,18 +24,27 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
-    private TextView tvUpdate, tvAcc, tvID, tvWater, tvLightTime, tvDayUp, tvTimeUpdate, tvTem, tvHumi, tvTimeUp, tvSttLight, tvSttEng, tvSttFan, tvDetail, tvProfile;
-    private Switch swLight, swEng, swFan;
-
-
+    private TextView tvUpdate, tvAcc, tvID, tvWater, tvLightTime, tvDayUp, tvTimeUpdate, tvTem, tvHumi, tvTimeUp, tvSttLight, tvSttEng, tvDetail, tvProfile;
+    private TextView tvControl, tvUpdateMode;
+    private EditText edtWater;
+    private Spinner spn1, spn2, spn3;
+    private Switch swLight, swEng, swControl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getView();
+        setEvent();
+//        GetData("http://192.168.56.1/status_api.php?id=123");
+    }
 
+    void getView(){
         tvUpdate = (TextView)findViewById(R.id.tvUpdate);
         tvAcc = (TextView)findViewById(R.id.tvOwner);
         tvID = (TextView)findViewById(R.id.tvID);
@@ -45,12 +57,46 @@ public class MainActivity extends AppCompatActivity {
         tvTimeUp = (TextView)findViewById(R.id.tvTimeUp);
         tvSttLight = (TextView)findViewById(R.id.tvSttLight);
         tvSttEng = (TextView)findViewById(R.id.tvSttEng);
-        tvSttFan = (TextView)findViewById(R.id.tvSttFan);
         tvDetail = (TextView)findViewById(R.id.tvDetail);
         tvProfile = (TextView)findViewById(R.id.tvProfile);
         swLight = (Switch)findViewById(R.id.swLight);
         swEng = (Switch)findViewById(R.id.swEngine);
-        swFan =(Switch)findViewById(R.id.swFan);
+        tvControl = (TextView)findViewById(R.id.tvControl);
+        tvUpdateMode = (TextView)findViewById(R.id.tvUpdateMode);
+        swControl = (Switch)findViewById(R.id.swControl);
+        edtWater = (EditText)findViewById(R.id.edtWater);
+        spn1 = (Spinner)findViewById(R.id.timePicker1);
+        spn2 = (Spinner)findViewById(R.id.timePicker2);
+        spn3 = (Spinner)findViewById(R.id.timePicker3);
+        setSpinnerTime();
+
+    }
+
+    void setSpinner(Spinner view, int start, int end){
+        List<String> list = new ArrayList<>();
+        for (int i = start; i <= end; i++){
+            if(i < 10) list.add("0"+i);
+            else list.add(i+"");
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item,list);
+        adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
+        view.setAdapter(adapter);
+        view.setEnabled(false);
+    }
+
+    void setSpinnerTime(){
+        setSpinner(spn1,1,12);
+        setSpinner(spn2,0,59);
+        List<String> list = new ArrayList<>();
+        list.add("AM");
+        list.add("PM");
+        ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item,list);
+        adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
+        spn3.setAdapter(adapter);
+        spn3.setEnabled(false);
+    }
+
+    void setEvent(){
         tvProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,41 +108,59 @@ public class MainActivity extends AppCompatActivity {
         swLight.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    tvSttLight.setText("Đang bật");
-                    tvSttLight.setTextColor(Color.parseColor("#228B22"));
+                if (!swControl.isChecked()){
+                    if(isChecked){
+                        tvSttLight.setText("Đang bật");
+                        tvSttLight.setTextColor(Color.parseColor("#228B22"));
+                    }else {
+                        tvSttLight.setText("Đang tắt");
+                        tvSttLight.setTextColor(Color.parseColor("#ff537e"));
+                    }
                 }else {
-                    tvSttLight.setText("Đang tắt");
-                    tvSttLight.setTextColor(Color.parseColor("#ff537e"));
+                    swLight.setChecked(false);
+                    Toast.makeText(MainActivity.this, "Bạn phải chuyển chế độ thủ công để bật", Toast.LENGTH_SHORT).show();
                 }
+
             }
         });
         swEng.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    tvSttEng.setText("Đang bật");
-                    tvSttEng.setTextColor(Color.parseColor("#228B22"));
+                if (!swControl.isChecked()){
+                    if(isChecked){
+                        swEng.setText("Đang bật");
+                        swEng.setTextColor(Color.parseColor("#228B22"));
+                    }else {
+                        swEng.setText("Đang tắt");
+                        swEng.setTextColor(Color.parseColor("#ff537e"));
+                    }
                 }else {
-                    tvSttEng.setText("Đang tắt");
-                    tvSttEng.setTextColor(Color.parseColor("#ff537e"));
+                    swEng.setChecked(false);
+                    Toast.makeText(MainActivity.this, "Bạn phải chuyển chế độ thủ công để bật", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-        swFan.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+        swControl.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    tvSttFan.setText("Đang bật");
-                    tvSttFan.setTextColor(Color.parseColor("#228B22"));
-
+                if (isChecked){
+                    tvControl.setText("Tự động");
+                    tvControl.setTextColor(Color.parseColor("#228B22"));
+                    edtWater.setEnabled(false);
+                    spn1.setEnabled(false);
+                    spn2.setEnabled(false);
+                    spn3.setEnabled(false);
                 }else {
-                    tvSttFan.setText("Đang tắt");
-                    tvSttFan.setTextColor(Color.parseColor("#ff537e"));
+                    tvControl.setText("Thủ công");
+                    tvControl.setTextColor(Color.parseColor("#ff537e"));
+                    edtWater.setEnabled(true);
+                    spn1.setEnabled(true);
+                    spn2.setEnabled(true);
+                    spn3.setEnabled(true);
                 }
             }
         });
-
         tvUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,10 +174,18 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        GetData("http://smartgardenbanana.tk/status_api.php?id=123");
-
+        tvUpdateMode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (swControl.isChecked()){
+                    Toast.makeText(MainActivity.this, "Không thực hiện dược thao tác này khi đang ở chế độ tự động", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(MainActivity.this, "Cập nhật chế độ", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
