@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -28,30 +29,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
-    private TextView tvUpdate, tvAcc, tvID, tvWater, tvLightTime, tvDayUp, tvTimeUpdate, tvTem, tvHumi, tvTimeUp, tvSttLight, tvSttEng, tvDetail, tvProfile;
-    private TextView tvControl, tvUpdateMode;
+    private String ID_DEVICE = "100";
+    private String DEF_WATER_LEVEL = "700";
+    private String DEF_TIME_LIGHT_ON = "18:00:00";
+    private String DEF_TIME_LIGHT_OFF = "05:00:00";
+    private TextView tvUpdate, tvAcc, tvID, tvDayUp, tvTimeUpdate, tvTem, tvHumi, tvTimeUp, tvSttLight, tvSttEng, tvDetail, tvProfile;
+    private TextView tvControl, tvWaterLevel, tvWaterQuality, tvAirQuality, tvUpdateMode;
     private EditText edtWater;
-    private Spinner spn1, spn2, spn3;
+    private LinearLayout ln;
+    private Spinner spn1, spn2, spn3, spn4;
     private Switch swLight, swEng, swControl;
-
+    private int WATER_MAX = 0;
+    private int controlMode = 0;
+    private int light = 0;
+    private int engine = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getView();
         setEvent();
-//        GetData("http://192.168.56.1/status_api.php?id=123");
+        GetData("http://192.168.56.1/status_api.php?id="+ID_DEVICE);
     }
 
     void getView(){
         tvUpdate = (TextView)findViewById(R.id.tvUpdate);
         tvAcc = (TextView)findViewById(R.id.tvOwner);
         tvID = (TextView)findViewById(R.id.tvID);
-        tvWater = (TextView)findViewById(R.id.tvWater);
-        tvLightTime = (TextView)findViewById(R.id.tvLightTime);
         tvDayUp = (TextView)findViewById(R.id.tvDayUp);
-        tvTimeUpdate = (TextView)findViewById(R.id.tvTimeUp);
+        tvTimeUpdate = (TextView)findViewById(R.id.tvTimeUpdate);
         tvTem = (TextView)findViewById(R.id.tvTem);
         tvHumi = (TextView)findViewById(R.id.tvHumi);
         tvTimeUp = (TextView)findViewById(R.id.tvTimeUp);
@@ -62,15 +68,20 @@ public class MainActivity extends AppCompatActivity {
         swLight = (Switch)findViewById(R.id.swLight);
         swEng = (Switch)findViewById(R.id.swEngine);
         tvControl = (TextView)findViewById(R.id.tvControl);
+        tvWaterLevel = (TextView)findViewById(R.id.tvWaterLevel);
+        tvWaterQuality = (TextView)findViewById(R.id.tvWaterQuality);
+        tvAirQuality = (TextView)findViewById(R.id.tvAirQuality);
         tvUpdateMode = (TextView)findViewById(R.id.tvUpdateMode);
         swControl = (Switch)findViewById(R.id.swControl);
+        ln = (LinearLayout)findViewById(R.id.lncontrol);
         edtWater = (EditText)findViewById(R.id.edtWater);
         spn1 = (Spinner)findViewById(R.id.timePicker1);
         spn2 = (Spinner)findViewById(R.id.timePicker2);
         spn3 = (Spinner)findViewById(R.id.timePicker3);
+        spn4 = (Spinner)findViewById(R.id.timePicker4);
         setSpinnerTime();
-
     }
+
 
     void setSpinner(Spinner view, int start, int end){
         List<String> list = new ArrayList<>();
@@ -85,15 +96,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void setSpinnerTime(){
-        setSpinner(spn1,1,12);
+        setSpinner(spn1,0,23);
         setSpinner(spn2,0,59);
-        List<String> list = new ArrayList<>();
-        list.add("AM");
-        list.add("PM");
-        ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item,list);
-        adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
-        spn3.setAdapter(adapter);
-        spn3.setEnabled(false);
+        setSpinner(spn3,0,23);
+        setSpinner(spn4,0,59);
     }
 
     void setEvent(){
@@ -117,8 +123,13 @@ public class MainActivity extends AppCompatActivity {
                         tvSttLight.setTextColor(Color.parseColor("#ff537e"));
                     }
                 }else {
-                    swLight.setChecked(false);
-                    Toast.makeText(MainActivity.this, "Bạn phải chuyển chế độ thủ công để bật", Toast.LENGTH_SHORT).show();
+                    if(light == 1){
+                        swLight.setChecked(true);
+                    }else {
+                        swLight.setChecked(false);
+                        Toast.makeText(MainActivity.this, "Bạn phải chuyển chế độ thủ công để bật đèn", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
 
             }
@@ -135,8 +146,9 @@ public class MainActivity extends AppCompatActivity {
                         swEng.setTextColor(Color.parseColor("#ff537e"));
                     }
                 }else {
+
                     swEng.setChecked(false);
-                    Toast.makeText(MainActivity.this, "Bạn phải chuyển chế độ thủ công để bật", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Bạn phải chuyển chế độ thủ công để bật bơm", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -151,6 +163,9 @@ public class MainActivity extends AppCompatActivity {
                     spn1.setEnabled(false);
                     spn2.setEnabled(false);
                     spn3.setEnabled(false);
+                    spn4.setEnabled(false);
+                    edtWater.setText(DEF_WATER_LEVEL);
+                    setTime(DEF_TIME_LIGHT_ON, DEF_TIME_LIGHT_OFF);
                 }else {
                     tvControl.setText("Thủ công");
                     tvControl.setTextColor(Color.parseColor("#ff537e"));
@@ -158,6 +173,7 @@ public class MainActivity extends AppCompatActivity {
                     spn1.setEnabled(true);
                     spn2.setEnabled(true);
                     spn3.setEnabled(true);
+                    spn4.setEnabled(true);
                 }
             }
         });
@@ -180,7 +196,8 @@ public class MainActivity extends AppCompatActivity {
                 if (swControl.isChecked()){
                     Toast.makeText(MainActivity.this, "Không thực hiện dược thao tác này khi đang ở chế độ tự động", Toast.LENGTH_SHORT).show();
                 }else {
-                    Toast.makeText(MainActivity.this, "Cập nhật chế độ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Cập nhật chế độ ", Toast.LENGTH_SHORT).show();
+
                 }
             }
         });
@@ -195,70 +212,107 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-//    private void SetSW(int idSW){
-//        String url = "";
-//        final RequestQueue requestQueue = Volley.newRequestQueue(this);
-//        if(idSW == 1){
-//            url = "";
-//        }
-//        if(idSW == 2){
-//            url = "";
-//        }
-//        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>(){
-//
-//            @Override
-//            public void onResponse(JSONArray response) {
-//                try {
-//
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
-//    }
-
     private  void GetData(String url){
         final RequestQueue requestQueue = Volley.newRequestQueue(this);
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+        final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-//                Toast.makeText(MainActivity.this,response.toString(),Toast.LENGTH_LONG).show();
-                for(int i = 0; i < response.length(); i++){
-                    try {
-                        JSONObject jsonObject = response.getJSONObject(i);
-                        tvID.setText(jsonObject.getString("id"));
-//                        tvUpdate.setText(jsonObject.getString("ngaygiocapnhat"));
-                        tvHumi.setText(jsonObject.getString("humidity"));
-                        String acc = jsonObject.getString("owner");
-                        if(acc.length() > 20)
-                            acc = acc.substring(0,16)+"...";
-                        tvAcc.setText(acc);
-                        tvWater.setText(jsonObject.getString("waterLevel"));
-                        if(jsonObject.getString("lightOn").equals("1"))
-                            swLight.setChecked(true);
-                        if(jsonObject.getString("engineOn").equals("1"))
-                            swEng.setChecked(true);
-                        tvTem.setText(jsonObject.getString("temperature"));
-                        tvDayUp.setText(jsonObject.getString("numDay"));
-
-
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+            for(int i = 0; i < response.length(); i++){
+                try {
+                    JSONObject jsonObject = response.getJSONObject(i);
+                    tvID.setText(jsonObject.getString("id"));
+                    tvTimeUp.setText(jsonObject.getString("dayPlanted"));
+                    tvTimeUpdate.setText(jsonObject.getString("timeUpdate"));
+                    String acc = jsonObject.getString("owner");
+                    if(acc.length() > 20)
+                        acc = acc.substring(0,16)+"...";
+                    tvAcc.setText(acc);
+                    tvTem.setText(jsonObject.getString("temperature"));
+                    tvHumi.setText(jsonObject.getString("humidity"));
+                    tvAirQuality.setText(jsonObject.getString("airQuality"));
+                    tvWaterLevel.setText(jsonObject.getString("waterLevel"));
+                    tvWaterQuality.setText(jsonObject.getString("waterQuality"));
+                    tvDayUp.setText(jsonObject.getString("numDay"));
+                    edtWater.setText(jsonObject.getString("waterLevelOn"));
+                    WATER_MAX = Integer.parseInt(jsonObject.getString("waterMax"));
+                    if (jsonObject.getString("controlMode").equals("1")){
+                        swControl.setChecked(true);
+                        controlMode = 1;
+                    }else {
+                        swControl.setChecked(false);
+                        controlMode = 0;
                     }
+                    if(jsonObject.getString("lightOn").equals("1")){
+                        swLight.setChecked(true);
+                        light = 1;
+                    }else {
+                        swLight.setChecked(false);
+                        light = 0;
+                    }
+                    if(jsonObject.getString("engineOn").equals("1")){
+                        swEng.setChecked(true);
+                        engine = 1;
+                    }else {
+                        swEng.setChecked(false);
+                        engine = 0;
+                    }
+                    String timeOn = jsonObject.getString("timeLightOn");
+                    String timeOff = jsonObject.getString("timeLightOff");
+                    setTime(timeOn,timeOff);
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
+            }
             }
         },
         new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(MainActivity.this, error.toString(), Toast.LENGTH_LONG).show();
-
             }
         }
         );
         requestQueue.add(jsonArrayRequest);
     }
+
+    public void setTime(String timeStart, String timeEnd){
+        String[] start = timeStart.split(":");
+        String[] end = timeEnd.split(":");
+        spn1.setSelection(Integer.parseInt(start[0]));
+        spn2.setSelection(Integer.parseInt(start[1]));
+        spn3.setSelection(Integer.parseInt(end[0]));
+        spn4.setSelection(Integer.parseInt(end[1]));
+    }
+
+    public String getTimeStart(){
+        return spn1.getSelectedItem() + ":" + spn2.getSelectedItem() + ":00";
+    }
+
+    public String getTimeEnd(){
+        return spn3.getSelectedItem() + ":" + spn3.getSelectedItem() + ":00";
+    }
+
+    public void setElementStatus(int status, String element){
+        String url = "http://192.168.56.1/set_api.php?" + element + "=" + status;
+        final RequestQueue requestQueue = Volley.newRequestQueue(this);
+        final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, "", null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                try {
+                    Toast.makeText(MainActivity.this, response.getJSONObject(0).getString("reply"), Toast.LENGTH_SHORT).show();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        },  new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(MainActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
 }
 
 
