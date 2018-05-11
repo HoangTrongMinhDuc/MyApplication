@@ -30,6 +30,10 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private String ID_DEVICE = "100";
+//    private String IP ="192.168.56.1";
+    private String IP ="192.168.1.5";
+//    private String IP ="192.168.137.1";
+
     private String DEF_WATER_LEVEL = "700";
     private String DEF_TIME_LIGHT_ON = "18:00:00";
     private String DEF_TIME_LIGHT_OFF = "05:00:00";
@@ -49,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getView();
         setEvent();
-        GetData("http://192.168.1.5/status_api.php?id="+ID_DEVICE);
+        GetData("http://"+IP+"/status_api.php?id="+ID_DEVICE);
     }
 
     void getView(){
@@ -81,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
         spn4 = (Spinner)findViewById(R.id.timePicker4);
         setSpinnerTime();
         swControl.requestFocus();
+
     }
 
 
@@ -119,9 +124,11 @@ public class MainActivity extends AppCompatActivity {
                     if(isChecked){
                         tvSttLight.setText("Đang bật");
                         tvSttLight.setTextColor(Color.parseColor("#228B22"));
+                        setElementStatus(1,"light");
                     }else {
                         tvSttLight.setText("Đang tắt");
                         tvSttLight.setTextColor(Color.parseColor("#ff537e"));
+                        setElementStatus(0,"light");
                     }
                 }else {
                     if(light == 1){
@@ -182,7 +189,8 @@ public class MainActivity extends AppCompatActivity {
         tvUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Đang cập nhật...",Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "Đang cập nhật...",Toast.LENGTH_SHORT).show();
+                GetData("http://"+IP+"/status_api.php?id="+ID_DEVICE);
             }
         });
         tvDetail.setOnClickListener(new View.OnClickListener() {
@@ -239,10 +247,10 @@ public class MainActivity extends AppCompatActivity {
                     edtWater.setText(jsonObject.getString("waterLevelOn"));
                     WATER_MAX = Integer.parseInt(jsonObject.getString("waterMax"));
                     if (jsonObject.getString("controlMode").equals("1")){
-                        swControl.setChecked(true);
+                        swControl.setChecked(false);
                         controlMode = 1;
                     }else {
-                        swControl.setChecked(false);
+                        swControl.setChecked(true);
                         controlMode = 0;
                     }
                     if(jsonObject.getString("lightOn").equals("1")){
@@ -292,34 +300,38 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public String getTimeEnd(){
-        return spn3.getSelectedItem() + ":" + spn3.getSelectedItem() + ":00";
+        return spn3.getSelectedItem() + ":" + spn4.getSelectedItem() + ":00";
     }
 
     public void setElementStatus(int status, String element){
         String url = "";
         if(element == "light" || element == "engine"){
-            url = "http://192.168.1.5/set_api.php?id=" + ID_DEVICE + "&" + element + "=" + status;
+            url = "http://"+IP+"/set_api.php?id=" + ID_DEVICE + "&" + element + "=" + status;
         }else {
-            url = "http://192.168.1.5/set_api.php?id=" + ID_DEVICE + "&timeon=" + getTimeStart() + "&timeoff=" + getTimeEnd();
+            url = "http://"+IP+"/set_api.php?id=" + ID_DEVICE + "&timeon=" + getTimeStart() + "&timeoff=" + getTimeEnd() + "&waterlvl=" + edtWater.getText();
         }
-
         final RequestQueue requestQueue = Volley.newRequestQueue(this);
-        final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, "http://192.168.1.5/set_api.php?id=100&engine=1", null, new Response.Listener<JSONArray>() {
+        final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-                try {
-                    Toast.makeText(MainActivity.this, response.getJSONObject(0).getString("reply"), Toast.LENGTH_SHORT).show();
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                for(int i = 0; i < response.length(); i++){
+                    try {
+                        JSONObject jsonObject = response.getJSONObject(i);
+                        Toast.makeText(MainActivity.this,jsonObject.getString("reply"),Toast.LENGTH_SHORT).show();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
-
             }
-        },  new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(MainActivity.this, error.toString(), Toast.LENGTH_LONG).show();
-            }
-        });
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(MainActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }
+        );
+        requestQueue.add(jsonArrayRequest);
     }
 
 }
