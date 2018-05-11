@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getView();
         setEvent();
-        GetData("http://192.168.56.1/status_api.php?id="+ID_DEVICE);
+        GetData("http://192.168.1.5/status_api.php?id="+ID_DEVICE);
     }
 
     void getView(){
@@ -80,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
         spn3 = (Spinner)findViewById(R.id.timePicker3);
         spn4 = (Spinner)findViewById(R.id.timePicker4);
         setSpinnerTime();
+        swControl.requestFocus();
     }
 
 
@@ -139,14 +140,15 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (!swControl.isChecked()){
                     if(isChecked){
-                        swEng.setText("Đang bật");
-                        swEng.setTextColor(Color.parseColor("#228B22"));
+                        tvSttEng.setText("Đang bật");
+                        tvSttEng.setTextColor(Color.parseColor("#228B22"));
+                        setElementStatus(1,"engine");
                     }else {
-                        swEng.setText("Đang tắt");
-                        swEng.setTextColor(Color.parseColor("#ff537e"));
+                        tvSttEng.setText("Đang tắt");
+                        tvSttEng.setTextColor(Color.parseColor("#ff537e"));
+                        setElementStatus(0,"engine");
                     }
                 }else {
-
                     swEng.setChecked(false);
                     Toast.makeText(MainActivity.this, "Bạn phải chuyển chế độ thủ công để bật bơm", Toast.LENGTH_SHORT).show();
                 }
@@ -197,6 +199,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Không thực hiện dược thao tác này khi đang ở chế độ tự động", Toast.LENGTH_SHORT).show();
                 }else {
                     Toast.makeText(MainActivity.this, "Cập nhật chế độ ", Toast.LENGTH_SHORT).show();
+                    setElementStatus(2,"time");
 
                 }
             }
@@ -293,9 +296,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setElementStatus(int status, String element){
-        String url = "http://192.168.56.1/set_api.php?" + element + "=" + status;
+        String url = "";
+        if(element == "light" || element == "engine"){
+            url = "http://192.168.1.5/set_api.php?id=" + ID_DEVICE + "&" + element + "=" + status;
+        }else {
+            url = "http://192.168.1.5/set_api.php?id=" + ID_DEVICE + "&timeon=" + getTimeStart() + "&timeoff=" + getTimeEnd();
+        }
+
         final RequestQueue requestQueue = Volley.newRequestQueue(this);
-        final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, "", null, new Response.Listener<JSONArray>() {
+        final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, "http://192.168.1.5/set_api.php?id=100&engine=1", null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 try {

@@ -443,6 +443,7 @@
                             android:id="@+id/swControl"
                             android:checked="true"
                             android:layout_marginLeft="20dp"
+                            android:focusableInTouchMode="true"
                             android:layout_gravity="center_vertical"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
