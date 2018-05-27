@@ -6,14 +6,13 @@
     tools:context=".Tem">
 
     <LinearLayout
-        android:layout_marginTop="15dp"
         android:orientation="vertical"
+        android:layout_marginTop="15dp"
         android:padding="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
         <TextView
-            android:text="NHIỆT ĐỘ"
+            android:text="Nhiệt độ"
             android:textStyle="bold"
             android:layout_marginBottom="10dp"
             android:textSize="20sp"
@@ -21,33 +20,38 @@
             android:textColor="#216800"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-        <RadioGroup
-            android:gravity="center"
+        <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <RadioButton
-                android:id="@+id/rdToday1"
-                android:checked="true"
-                android:text="Hôm nay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <RadioButton
-                android:id="@+id/rd7days1"
-                android:text="Tuần này"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <RadioButton
-                android:id="@+id/rdMonth1"
-                android:text="Tháng này"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <RadioButton
-                android:id="@+id/rdYear1"
-                android:text="Năm"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </RadioGroup>
+            <RadioGroup
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <RadioButton
+                    android:id="@+id/rdToday1"
+                    android:text="Ngày"
+                    android:checked="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <RadioButton
+                    android:id="@+id/rd7days1"
+                    android:text="Tuần"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <RadioButton
+                    android:id="@+id/rdMonth1"
+                    android:text="Tháng"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <RadioButton
+                    android:id="@+id/rdAll1"
+                    android:text="Tất cả"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RadioGroup>
+        </LinearLayout>
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/chart1"
             android:layout_width="match_parent"

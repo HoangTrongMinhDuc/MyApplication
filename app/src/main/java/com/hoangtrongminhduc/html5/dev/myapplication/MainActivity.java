@@ -1,8 +1,10 @@
 package com.hoangtrongminhduc.html5.dev.myapplication;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -29,9 +31,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private String ID_DEVICE = "100";
+    public static String ID_DEVICE = "100";
 //    private String IP ="192.168.56.1";
-    private String IP ="192.168.1.5";
+    public static String IP ="192.168.44.1";
 //    private String IP ="192.168.137.1";
 
     private String DEF_WATER_LEVEL = "700";
@@ -68,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         tvSttLight = (TextView)findViewById(R.id.tvSttLight);
         tvSttEng = (TextView)findViewById(R.id.tvSttEng);
         tvDetail = (TextView)findViewById(R.id.tvDetail);
-        tvProfile = (TextView)findViewById(R.id.tvProfile);
+//        tvProfile = (TextView)findViewById(R.id.tvProfile);
         swLight = (Switch)findViewById(R.id.swLight);
         swEng = (Switch)findViewById(R.id.swEngine);
         tvControl = (TextView)findViewById(R.id.tvControl);
@@ -109,13 +111,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void setEvent(){
-        tvProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent2 = new Intent(MainActivity.this, login.class);
-                startActivityForResult(intent2, 5000);
-            }
-        });
+//        tvProfile.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent2 = new Intent(MainActivity.this, login.class);
+//                startActivityForResult(intent2, 5000);
+//            }
+//        });
 
         swLight.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -210,6 +212,13 @@ public class MainActivity extends AppCompatActivity {
                     setElementStatus(2,"time");
 
                 }
+            }
+        });
+        tvAcc.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                inputURL();
+                return false;
             }
         });
     }
@@ -332,6 +341,28 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
         requestQueue.add(jsonArrayRequest);
+    }
+
+    void inputURL(){
+        final EditText txtUrl = new EditText(this);
+        txtUrl.setHint("Nhập IP");
+        txtUrl.setText(IP);
+        new AlertDialog.Builder(this)
+                .setTitle("IP máy chủ")
+                .setMessage("Nhập IP máy chủ vào ô sau")
+                .setView(txtUrl)
+                .setPositiveButton("Nhập", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        String url = txtUrl.getText().toString();
+                        IP = url;
+                        GetData("http://"+IP+"/status_api.php?id="+ID_DEVICE);
+                    }
+                })
+                .setNegativeButton("Bỏ qua", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                    }
+                })
+                .show();
     }
 
 }

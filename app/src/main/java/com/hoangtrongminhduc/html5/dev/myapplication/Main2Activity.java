@@ -5,12 +5,14 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 
 public class Main2Activity extends AppCompatActivity {
 //    private LineChart chart, chart2;
     private TableLayout tabLayout;
+    private HorizontalScrollView scrollView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,10 +40,15 @@ public class Main2Activity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("Nhiệt độ"));
         tabLayout.addTab(tabLayout.newTab().setText("Độ ẩm"));
+        tabLayout.addTab(tabLayout.newTab().setText("Không khí"));
+        tabLayout.addTab(tabLayout.newTab().setText("Lượng nước"));
+        tabLayout.addTab(tabLayout.newTab().setText("Chất nước"));
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
+//        scrollView = (HorizontalScrollView) findViewById(R.id.scrv);
+
         final PagerAdapter adapter = new PagerAdapter
                 (getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(adapter);

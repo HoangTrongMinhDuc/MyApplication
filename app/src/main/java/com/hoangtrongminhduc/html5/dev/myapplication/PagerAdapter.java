@@ -22,13 +22,21 @@ public class PagerAdapter extends FragmentStatePagerAdapter{
             case 1:
                 frag = new Humi();
                 break;
-
+            case 2:
+                frag = new Air();
+                break;
+            case 3:
+                frag = new WaterQ();
+                break;
+            case 4:
+                frag = new WaterL();
+                break;
         }
         return frag;
     }
 
     @Override
     public int getCount() {
-        return 2;
+        return 5;
     }
 }

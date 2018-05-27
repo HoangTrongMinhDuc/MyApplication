@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Humi">
+    tools:context=".Air">
 
     <LinearLayout
         android:orientation="vertical"
@@ -12,8 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
-            android:text="ĐỘ ẨM"
-            android:id="@+id/typegraph"
+            android:text="Chất lượng không khí"
             android:textStyle="bold"
             android:layout_marginBottom="10dp"
             android:textSize="20sp"
@@ -31,30 +30,30 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <RadioButton
-                    android:id="@+id/rdToday2"
+                    android:id="@+id/rdToday3"
                     android:text="Ngày"
                     android:checked="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <RadioButton
-                    android:id="@+id/rd7days2"
+                    android:id="@+id/rd7days3"
                     android:text="Tuần"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <RadioButton
-                    android:id="@+id/rdMonth2"
+                    android:id="@+id/rdMonth3"
                     android:text="Tháng"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <RadioButton
-                    android:id="@+id/rdAll2"
+                    android:id="@+id/rdAll3"
                     android:text="Tất cả"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </RadioGroup>
         </LinearLayout>
         <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/chart2"
+            android:id="@+id/chart3"
             android:layout_width="match_parent"
             android:layout_height="200dp">
         </com.github.mikephil.charting.charts.LineChart>

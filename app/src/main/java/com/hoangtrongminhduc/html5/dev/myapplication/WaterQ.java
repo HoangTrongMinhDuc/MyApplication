@@ -1,6 +1,5 @@
 package com.hoangtrongminhduc.html5.dev.myapplication;
 
-import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -30,36 +29,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Tem extends Fragment {
+public class WaterQ extends Fragment {
     private LineChart chart;
     private RadioButton rd1, rd2, rd3, rd4;
     private MainActivity mainActivity;
     String id = mainActivity.ID_DEVICE;
     String IP = mainActivity.IP;
-    Dialog dialog;
-    public Tem() {
+    public WaterQ() {
         // Required empty public constructor
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_tem, container, false);
+        View view = inflater.inflate(R.layout.fragment_water_q, container, false);
         getViewContent(view);
         setEvent();
-        showDialog();
         setData(1);
         return view;
     }
 
     public void getViewContent(View view){
-        rd1 = (RadioButton)view.findViewById(R.id.rdToday1);
-        rd2 = (RadioButton)view.findViewById(R.id.rd7days1);
-        rd3 = (RadioButton)view.findViewById(R.id.rdMonth1);
-        rd4 = (RadioButton)view.findViewById(R.id.rdAll1);
-        chart = (LineChart) view.findViewById(R.id.chart1);
+        rd1 = (RadioButton)view.findViewById(R.id.rdToday4);
+        rd2 = (RadioButton)view.findViewById(R.id.rd7days4);
+        rd3 = (RadioButton)view.findViewById(R.id.rdMonth4);
+        rd4 = (RadioButton)view.findViewById(R.id.rdAll4);
+        chart = (LineChart) view.findViewById(R.id.chart4);
         Description description = new Description();
-        description.setText("Nhiệt độ");
+        description.setText("Chất lượng nước");
         chart.setDescription(description);
     }
 
@@ -68,7 +65,6 @@ public class Tem extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked){
-                    showDialog();
                     setData(100);
                 }
             }
@@ -78,7 +74,6 @@ public class Tem extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked){
-                    showDialog();
                     setData(30);
                 }
             }
@@ -88,7 +83,6 @@ public class Tem extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked){
-                    showDialog();
                     setData(7);
                 }
             }
@@ -98,14 +92,13 @@ public class Tem extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked){
-                    showDialog();
                     setData(1);
                 }
             }
         });
     }
     void setData(int day){
-        final String url = "http://"+IP+"/getdatabase.php?id="+id+"&type="+1+"&numday="+day;
+        final String url = "http://"+IP+"/getdatabase.php?id="+id+"&type="+4+"&numday="+day;
         final List<Entry> yValues2 = new ArrayList<>();
         final RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
@@ -115,12 +108,9 @@ public class Tem extends Fragment {
                     try {
                         JSONObject jsonObject = response.getJSONObject(i);
                         yValues2.add(new Entry(i, Float.parseFloat(jsonObject.getString("data"))));
-                        LineDataSet set2 = new LineDataSet(yValues2, "Độ C");
+                        LineDataSet set2 = new LineDataSet(yValues2, "Phần triệu (ppm)");
                         LineData lineData2 = new LineData(set2);
                         chart.setData(lineData2);
-                        if (dialog.isShowing()){
-                            dialog.dismiss();
-                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -135,11 +125,5 @@ public class Tem extends Fragment {
                 }
         );
         requestQueue.add(jsonArrayRequest);
-    }
-    public void showDialog() {
-        dialog = new Dialog(getActivity());
-        dialog.setTitle("Đang tải dữ liệu");
-        dialog.setContentView(R.layout.loading);
-        dialog.show();
     }
 }

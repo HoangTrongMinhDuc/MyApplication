@@ -17,10 +17,10 @@
             android:layout_width="match_parent"
             android:layout_height="70dp">
             <TextView
-                android:id="@+id/tvProfile"
+                android:id="@+id/tvDetail"
                 android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true"
-                android:text="Cá nhân"
+                android:text="Phân tích"
                 android:textColor="#f6fcfd"
                 android:background="@drawable/roundborder2"
                 android:gravity="center"
@@ -525,19 +525,19 @@
                 </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
-        <TextView
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:id="@+id/tvDetail"
-            android:text="XEM ĐÁNH GIÁ CHI TIẾT"
-            android:textStyle="bold"
-            android:textColor="#f6fcfd"
-            android:background="@drawable/roundborder"
-            android:textSize="15sp"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="35dp" />
+        <!--<TextView-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:layout_marginLeft="20dp"-->
+            <!--android:layout_marginRight="20dp"-->
+            <!--android:id="@+id/tvDetail"-->
+            <!--android:text="XEM ĐÁNH GIÁ CHI TIẾT"-->
+            <!--android:textStyle="bold"-->
+            <!--android:textColor="#f6fcfd"-->
+            <!--android:background="@drawable/roundborder"-->
+            <!--android:textSize="15sp"-->
+            <!--android:gravity="center"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="35dp" />-->
         <Space
             android:layout_width="match_parent"
             android:layout_height="25dp" />
